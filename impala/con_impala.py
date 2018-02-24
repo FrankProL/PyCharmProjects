@@ -19,8 +19,11 @@ adate = yesterday.strftime('%Y-%m-%d')
 bdate = yesterday.strftime('%Y%m%d')
 print adate,bdate
 
-adate='2018-02-09'
-bdate='20180209'
+# adate='2018-02-09'
+# bdate='20180209'
+
+# adate='2018-02-14'
+# bdate='20180214'
 
 # 查询mysql  竞猜题目数
 into_db = ("rr-bp1o90m39oporf1g1o.mysql.rds.aliyuncs.com", "loujianfeng", "FeTuH9bo6fakUw9", "utf8","live_core")
@@ -35,21 +38,35 @@ cursor = cnxn.cursor()
 cursor.execute(sql)
 result=cursor.fetchall()
 print (result)
-print type(result)
-if result[0][0]==123269:
-    _20=result[0][1]+result[1][1]
-    _21=result[0][1]
-    _22=result[1][1]
+if not result:
+    print "result is null"
+    _20, _21, _22=0,0,0
 else:
-    _20=result[0][1]+result[1][1]
-    _21=result[1][1]
-    _22=result[0][1]
+    if len(result) == 1:
+        if result[0][0] == 123269:
+            _20 = result[0][1]
+            _21 = result[0][1]
+            _22 = 0
+        else:
+            _20 = result[0][1]
+            _21 = 0
+            _22 = result[0][1]
+    else:
+        if result[0][0] == 123269:
+            _20 = result[0][1] + result[1][1]
+            _21 = result[0][1]
+            _22 = result[1][1]
+        else:
+            _20 = result[0][1] + result[1][1]
+            _21 = result[1][1]
+            _22 = result[0][1]
+print type(result)
+
 print _20,_21,_22
 
 
 cursor.close()
 cnxn.close()
-
 
 
 conn = connect(host='lg-15-163.ko.cn',port=21050)
@@ -386,12 +403,11 @@ data_df.to_excel(writer,u'充值注册',float_format='%.5f') # float_format 控�
 
 # writer.save()
 """写入excel"""
-data_df_mysql = pd.DataFrame(list(result))
+if result:
+    data_df_mysql = pd.DataFrame(list(result))
 
-data_df_mysql.columns = [u'房间ID', u'用户ID', u'昵称', u'注册时间', u'充值累计', u'当天充值累计', u'押注次数', u'押注金币累计', u'返还金币累计']
+    data_df_mysql.columns = [u'房间ID', u'用户ID', u'昵称', u'注册时间', u'充值累计', u'当天充值累计', u'押注次数', u'押注金币累计', u'返还金币累计']
 
-# create and writer pd.DataFrame to excel
-# writer = pd.ExcelWriter('Save_Excel.xlsx')
-data_df_mysql.to_excel(writer,u'竞猜用户',float_format='%.5f') # float_format 控制精度
+    data_df_mysql.to_excel(writer, u'竞猜用户', float_format='%.5f')  # float_format 控制精度
 writer.save()
 writer.close()
