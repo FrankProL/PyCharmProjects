@@ -398,7 +398,7 @@ data_df.index = [u'历史首次充值人数',u'历史首次充值用户充值金
                  u'房间登录用户首次充值人数',u'房间登录用户首次充值金额',u'房间登录用户数新增注册人数',u'房间登录用户数新增注册充值人数',u'房间登录用户数新增注册充值金额']
 
 # create and writer pd.DataFrame to excel
-writer = pd.ExcelWriter('Save_Excel.xlsx')
+writer = pd.ExcelWriter('/home/none_pass/jingcai_activity_0213/Save_Excel.xlsx')
 data_df.to_excel(writer,u'充值注册',float_format='%.5f') # float_format 控制精度
 
 # writer.save()
