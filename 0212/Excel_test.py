@@ -10,13 +10,19 @@
 import numpy as np
 import pandas as pd
 
-# prepare for data
+from datetime import timedelta, datetime
 
+yesterday = datetime.today() + timedelta(-1)
+title_1= yesterday.strftime('%m月%d日')
+title_2= yesterday.strftime('%m月%d日(123269)')
+title_3= yesterday.strftime('%m月%d日(124770)')
+
+# prepare for data
 data = np.arange(1, 34).reshape((11, 3))
 data_df = pd.DataFrame(data)
 
 # change the index and column name
-data_df.columns = [u'2月9日', u'2月9日（123269）', u'2月9日（124770）']
+data_df.columns = ['%s' % (title_1),'%s' % (title_2),'%s' % (title_3)]
 data_df.index = [u'历史首次充值人数', u'历史首次充值用户充值金额(当天充值)', u'竞猜题目数', u'房间登录用户数', u'房间登录用户充值人数', u'房间登录用户充值金额（去除红星闪闪）',
                  u'房间登录用户首次充值人数', u'房间登录用户首次充值金额', u'房间登录用户数新增注册人数', u'房间登录用户数新增注册充值人数', u'房间登录用户数新增注册充值金额']
 

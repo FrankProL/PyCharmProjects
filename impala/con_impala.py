@@ -392,13 +392,18 @@ cnxn.close()
 """写入excel"""
 data_df = pd.DataFrame(data)
 
+title_1= yesterday.strftime('%m-%d')
+title_2= yesterday.strftime('%m-%d(123269)')
+title_3= yesterday.strftime('%m-%d(124770)')
+
 # change the index and column name
-data_df.columns = [u'2月9日',u'2月9日（123269）',u'2月9日（124770）']
+data_df.columns = ['%s' % (title_1),'%s' % (title_2),'%s' % (title_3)]
 data_df.index = [u'历史首次充值人数',u'历史首次充值用户充值金额(当天充值)',u'竞猜题目数',u'房间登录用户数',u'房间登录用户充值人数',u'房间登录用户充值金额（去除红星闪闪）',
                  u'房间登录用户首次充值人数',u'房间登录用户首次充值金额',u'房间登录用户数新增注册人数',u'房间登录用户数新增注册充值人数',u'房间登录用户数新增注册充值金额']
 
 # create and writer pd.DataFrame to excel
-writer = pd.ExcelWriter('/home/none_pass/jingcai_activity_0213/Save_Excel.xlsx')
+# writer = pd.ExcelWriter('/home/none_pass/jingcai_activity_0213/Save_Excel.xlsx')      # linux 服务器路径
+writer = pd.ExcelWriter('Save_Excel.xlsx')                                              # windows 运行路径
 data_df.to_excel(writer,u'充值注册',float_format='%.5f') # float_format 控制精度
 
 # writer.save()
@@ -437,7 +442,8 @@ message['Subject'] = Header(subject, 'utf-8')
 message.attach(MIMEText('竞猜活动数据：(自动发送)', 'plain', 'utf-8'))
 
 # 构造附件1，传送当前目录下的 test.txt 文件
-att1 = MIMEText(open('/home/none_pass/jingcai_activity_0213/Save_Excel.xlsx', 'rb').read(), 'base64', 'utf-8')
+# att1 = MIMEText(open('/home/none_pass/jingcai_activity_0213/Save_Excel.xlsx', 'rb').read(), 'base64', 'utf-8')  # linux
+att1 = MIMEText(open('Save_Excel.xlsx', 'rb').read(), 'base64', 'utf-8')    # windows
 att1["Content-Type"] = 'application/octet-stream'
 # 这里的filename可以任意写，写什么名字，邮件中显示什么名字
 att1["Content-Disposition"] = 'attachment; filename="Save_Excel.xlsx"'
