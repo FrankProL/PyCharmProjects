@@ -73,12 +73,12 @@ conn = connect(host='lg-15-163.ko.cn',port=21050)
 cur = conn.cursor()
 
 # 历史首次充值人数	历史首次充值用户充值金额
-cur.execute("""SELECT COUNT(DISTINCT user_id),SUM(money) from stats_user_account_log_v1 where money>0 and create_time_day='%s'
+cur.execute("""SELECT COUNT(DISTINCT user_id),SUM(recharge_money) from stats_user_recharge_v1 where recharge_money>0 and create_time_day='%s'
 and user_id not in
 (
 SELECT DISTINCT user_id
-from stats_user_account_log_v1
-where create_time_day<'%s' and money>0
+from stats_user_recharge_v1
+where create_time_day<'%s' and recharge_money>0
 )""" % (adate,adate))
 result=cur.fetchone()
 _00=result[0]
@@ -106,8 +106,8 @@ print _31,_32
 
 # 123269房间登录用户充值人数
 sql="""select count(distinct user_id)
-from stats_user_account_log_v1
-where money>0 and create_time_day='%s'
+from stats_user_recharge_v1
+where recharge_money>0 and create_time_day='%s'
 and user_id in (select distinct cast(trim(uid) as bigint)
 from ssets_weblogs201
 where day='%s'
@@ -121,8 +121,8 @@ print _41
 
 # 124770房间登录用户充值人数
 sql="""select count(distinct user_id)
-from stats_user_account_log_v1
-where money>0 and create_time_day='%s'
+from stats_user_recharge_v1
+where recharge_money>0 and create_time_day='%s'
 and user_id in (select distinct cast(trim(uid) as bigint)
 from ssets_weblogs201
 where day='%s'
@@ -135,9 +135,9 @@ print _42
 
 
 # 123269房间登录用户充值金额（去除红星闪闪）
-sql="""select sum(money)
-from stats_user_account_log_v1
-where money>0 and create_time_day='%s'
+sql="""select sum(recharge_money)
+from stats_user_recharge_v1
+where recharge_money>0 and create_time_day='%s'
 and user_id in (select distinct cast(trim(uid) as bigint)
 from ssets_weblogs201
 where day='%s'
@@ -151,9 +151,9 @@ print _51
 
 
 # 124770房间登录用户充值金额（去除红星闪闪）
-sql="""select sum(money)
-from stats_user_account_log_v1
-where money>0 and create_time_day='%s'
+sql="""select sum(recharge_money)
+from stats_user_recharge_v1
+where recharge_money>0 and create_time_day='%s'
 and user_id in (select distinct cast(trim(uid) as bigint)
 from ssets_weblogs201
 where day='%s'
@@ -168,13 +168,13 @@ print _52
 
 # 123269房间登录用户首次充值人数
 sql="""SELECT COUNT(DISTINCT user_id)
-from stats_user_account_log_v1
-where money>0 and create_time_day='%s'
+from stats_user_recharge_v1
+where recharge_money>0 and create_time_day='%s'
 and user_id not in
 (
 SELECT DISTINCT user_id
-from stats_user_account_log_v1
-where create_time_day<'%s' and money>0
+from stats_user_recharge_v1
+where create_time_day<'%s' and recharge_money>0
 )
 and user_id in (select distinct cast(trim(uid) as bigint)
 from ssets_weblogs201
@@ -189,13 +189,13 @@ print _61
 
 # 124770房间登录用户首次充值人数
 sql="""SELECT COUNT(DISTINCT user_id)
-from stats_user_account_log_v1
-where money>0 and create_time_day='%s'
+from stats_user_recharge_v1
+where recharge_money>0 and create_time_day='%s'
 and user_id not in
 (
 SELECT DISTINCT user_id
-from stats_user_account_log_v1
-where create_time_day<'%s' and money>0
+from stats_user_recharge_v1
+where create_time_day<'%s' and recharge_money>0
 )
 and user_id in (select distinct cast(trim(uid) as bigint)
 from ssets_weblogs201
@@ -209,13 +209,13 @@ print _62
 
 
 # 123269房间登录用户首次充值金额
-sql="""select sum(b.money)
+sql="""select sum(b.recharge_money)
 from
 (
-  select a.user_id,sum(a.money) as money
+  select a.user_id,sum(a.recharge_money) as recharge_money
   from
   (
-    select user_id,create_time_day,money,row_number() over (partition by user_id order by create_time) as row_number from stats_user_account_log_v1 where money>0
+    select user_id,create_time_day,recharge_money,row_number() over (partition by user_id order by create_time) as row_number from stats_user_recharge_v1 where recharge_money>0
   ) a
   where a.row_number =1 and a.create_time_day = '%s' group by a.user_id
 ) b
@@ -231,13 +231,13 @@ print _71
 
 
 # 124770房间登录用户首次充值金额
-sql="""select sum(b.money)
+sql="""select sum(b.recharge_money)
 from
 (
-  select a.user_id,sum(a.money) as money
+  select a.user_id,sum(a.recharge_money) as recharge_money
   from
   (
-    select user_id,create_time_day,money,row_number() over (partition by user_id order by create_time) as row_number from stats_user_account_log_v1 where money>0
+    select user_id,create_time_day,recharge_money,row_number() over (partition by user_id order by create_time) as row_number from stats_user_recharge_v1 where recharge_money>0
   ) a
   where a.row_number =1 and a.create_time_day = '%s' group by a.user_id
 ) b
@@ -283,9 +283,9 @@ print _82
 
 
 # 123269房间登录用户数新增注册充值人数	房间登录用户数新增注册充值金额
-sql="""SELECT COUNT(DISTINCT user_id),SUM(money)
-from stats_user_account_log_v1
-where money>0 and create_time_day='%s'
+sql="""SELECT COUNT(DISTINCT user_id),SUM(recharge_money)
+from stats_user_recharge_v1
+where recharge_money>0 and create_time_day='%s'
 and user_id in
 (
 select id
@@ -305,9 +305,9 @@ print _91,_101
 
 
 # 124770房间登录用户数新增注册充值人数	房间登录用户数新增注册充值金额
-sql="""SELECT COUNT(DISTINCT user_id),SUM(money)
-from stats_user_account_log_v1
-where money>0 and create_time_day='%s'
+sql="""SELECT COUNT(DISTINCT user_id),SUM(recharge_money)
+from stats_user_recharge_v1
+where recharge_money>0 and create_time_day='%s'
 and user_id in
 (
 select id
@@ -342,51 +342,51 @@ data=[[_00,u'----',u'----'],
 print data
 
 
-print '开始查询mysql'
-# 查询mysql  竞猜用户
-into_db = ("rr-bp1o90m39oporf1g1o.mysql.rds.aliyuncs.com", "loujianfeng", "FeTuH9bo6fakUw9", "utf8","live_core")
-
-cnxn = MySQLdb.connect(host=into_db[0], user=into_db[1], passwd=into_db[2], charset=into_db[3], db=into_db[4])
-
-sql = """select DISTINCT r.room_id,r.user_id,s.nickname,s.create_time,t.historyrecharge,u.recharge,r.xnum,r.money,r.award
-from 
-(
-select b.room_id,a.user_id,sum(a.xiazhu) as money,sum(a.rew) as award,sum(a.num) xnum
-from 
-(select user_id,question_id,sum(quizzes_amount) as xiazhu ,sum(reward_amount) as rew,count(user_id) as num 
-from jc_quiz
-where left(quiz_time,10)='%s'
-GROUP BY user_id,question_id
-ORDER BY user_id,question_id
-) as a ,
-(select id,room_id from jc_quiz_question where left(start_time,10)='%s') as b 
-where a.question_id=b.id
-group by b.room_id,a.user_id
-ORDER BY b.room_id
-) as r left join 
-user as s
-on r.user_id=s.id
-left join (select user_id,sum(money) as historyrecharge
- from user_account_log
- where money>0 
- and DATE(create_time)<='%s'
- group by user_id ) as t on r.user_id=t.user_id
-left join (select user_id,sum(money) as recharge
- from user_account_log
- where money>0 
- and DATE(create_time)='%s'
- group by user_id ) as u on r.user_id=u.user_id
-order by r.room_id,r.user_id""" % (adate,adate,adate,adate)
-
-cursor = cnxn.cursor()
-
-cursor.execute(sql)
-result=cursor.fetchall()
-print (result)
-print type(result)
-
-cursor.close()
-cnxn.close()
+# print '开始查询mysql'
+# # 查询mysql  竞猜用户
+# into_db = ("rr-bp1o90m39oporf1g1o.mysql.rds.aliyuncs.com", "loujianfeng", "FeTuH9bo6fakUw9", "utf8","live_core")
+#
+# cnxn = MySQLdb.connect(host=into_db[0], user=into_db[1], passwd=into_db[2], charset=into_db[3], db=into_db[4])
+#
+# sql = """select DISTINCT r.room_id,r.user_id,s.nickname,s.create_time,t.historyrecharge,u.recharge,r.xnum,r.recharge_money,r.award
+# from
+# (
+# select b.room_id,a.user_id,sum(a.xiazhu) as recharge_money,sum(a.rew) as award,sum(a.num) xnum
+# from
+# (select user_id,question_id,sum(quizzes_amount) as xiazhu ,sum(reward_amount) as rew,count(user_id) as num
+# from jc_quiz
+# where left(quiz_time,10)='%s'
+# GROUP BY user_id,question_id
+# ORDER BY user_id,question_id
+# ) as a ,
+# (select id,room_id from jc_quiz_question where left(start_time,10)='%s') as b
+# where a.question_id=b.id
+# group by b.room_id,a.user_id
+# ORDER BY b.room_id
+# ) as r left join
+# user as s
+# on r.user_id=s.id
+# left join (select user_id,sum(recharge_money) as historyrecharge
+#  from user_account_log
+#  where recharge_money>0
+#  and DATE(create_time)<='%s'
+#  group by user_id ) as t on r.user_id=t.user_id
+# left join (select user_id,sum(recharge_money) as recharge
+#  from user_account_log
+#  where recharge_money>0
+#  and DATE(create_time)='%s'
+#  group by user_id ) as u on r.user_id=u.user_id
+# order by r.room_id,r.user_id""" % (adate,adate,adate,adate)
+#
+# cursor = cnxn.cursor()
+#
+# cursor.execute(sql)
+# result=cursor.fetchall()
+# print (result)
+# print type(result)
+#
+# cursor.close()
+# cnxn.close()
 
 
 """写入excel"""
@@ -402,18 +402,18 @@ data_df.index = [u'历史首次充值人数',u'历史首次充值用户充值金
                  u'房间登录用户首次充值人数',u'房间登录用户首次充值金额',u'房间登录用户数新增注册人数',u'房间登录用户数新增注册充值人数',u'房间登录用户数新增注册充值金额']
 
 # create and writer pd.DataFrame to excel
-# writer = pd.ExcelWriter('/home/none_pass/jingcai_activity_0213/Save_Excel.xlsx')      # linux 服务器路径
-writer = pd.ExcelWriter('Save_Excel.xlsx')                                              # windows 运行路径
+writer = pd.ExcelWriter('/home/none_pass/jingcai_activity_0213/Save_Excel.xlsx')      # linux 服务器路径
+# writer = pd.ExcelWriter('Save_Excel.xlsx')                                              # windows 运行路径
 data_df.to_excel(writer,u'充值注册',float_format='%.5f') # float_format 控制精度
 
-# writer.save()
-"""写入excel"""
-if result:
-    data_df_mysql = pd.DataFrame(list(result))
-
-    data_df_mysql.columns = [u'房间ID', u'用户ID', u'昵称', u'注册时间', u'充值累计', u'当天充值累计', u'押注次数', u'押注金币累计', u'返还金币累计']
-
-    data_df_mysql.to_excel(writer, u'竞猜用户', float_format='%.5f')  # float_format 控制精度
+# # writer.save()
+# """写入excel"""
+# if result:
+#     data_df_mysql = pd.DataFrame(list(result))
+#
+#     data_df_mysql.columns = [u'房间ID', u'用户ID', u'昵称', u'注册时间', u'充值累计', u'当天充值累计', u'押注次数', u'押注金币累计', u'返还金币累计']
+#
+#     data_df_mysql.to_excel(writer, u'竞猜用户', float_format='%.5f')  # float_format 控制精度
 writer.save()
 writer.close()
 
@@ -442,8 +442,8 @@ message['Subject'] = Header(subject, 'utf-8')
 message.attach(MIMEText('竞猜活动数据：(自动发送)', 'plain', 'utf-8'))
 
 # 构造附件1，传送当前目录下的 test.txt 文件
-# att1 = MIMEText(open('/home/none_pass/jingcai_activity_0213/Save_Excel.xlsx', 'rb').read(), 'base64', 'utf-8')  # linux
-att1 = MIMEText(open('Save_Excel.xlsx', 'rb').read(), 'base64', 'utf-8')    # windows
+att1 = MIMEText(open('/home/none_pass/jingcai_activity_0213/Save_Excel.xlsx', 'rb').read(), 'base64', 'utf-8')  # linux
+# att1 = MIMEText(open('Save_Excel.xlsx', 'rb').read(), 'base64', 'utf-8')    # windows
 att1["Content-Type"] = 'application/octet-stream'
 # 这里的filename可以任意写，写什么名字，邮件中显示什么名字
 att1["Content-Disposition"] = 'attachment; filename="Save_Excel.xlsx"'
