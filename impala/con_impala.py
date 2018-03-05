@@ -26,7 +26,7 @@ print adate,bdate
 # bdate='20180214'
 
 # 查询mysql  竞猜题目数
-into_db = ("rr-bp1o90m39oporf1g1o.mysql.rds.aliyuncs.com", "loujianfeng", "FeTuH9bo6fakUw9", "utf8","live_core")
+into_db = ("rr-bp1mku8v6xlq45tpco.mysql.rds.aliyuncs.com", "loujianfeng", "FeTuH9bo6fakUw9", "utf8","live_core")
 
 cnxn = MySQLdb.connect(host=into_db[0], user=into_db[1], passwd=into_db[2], charset=into_db[3], db=into_db[4])
 
@@ -342,51 +342,51 @@ data=[[_00,u'----',u'----'],
 print data
 
 
-# print '开始查询mysql'
-# # 查询mysql  竞猜用户
-# into_db = ("rr-bp1o90m39oporf1g1o.mysql.rds.aliyuncs.com", "loujianfeng", "FeTuH9bo6fakUw9", "utf8","live_core")
-#
-# cnxn = MySQLdb.connect(host=into_db[0], user=into_db[1], passwd=into_db[2], charset=into_db[3], db=into_db[4])
-#
-# sql = """select DISTINCT r.room_id,r.user_id,s.nickname,s.create_time,t.historyrecharge,u.recharge,r.xnum,r.recharge_money,r.award
-# from
-# (
-# select b.room_id,a.user_id,sum(a.xiazhu) as recharge_money,sum(a.rew) as award,sum(a.num) xnum
-# from
-# (select user_id,question_id,sum(quizzes_amount) as xiazhu ,sum(reward_amount) as rew,count(user_id) as num
-# from jc_quiz
-# where left(quiz_time,10)='%s'
-# GROUP BY user_id,question_id
-# ORDER BY user_id,question_id
-# ) as a ,
-# (select id,room_id from jc_quiz_question where left(start_time,10)='%s') as b
-# where a.question_id=b.id
-# group by b.room_id,a.user_id
-# ORDER BY b.room_id
-# ) as r left join
-# user as s
-# on r.user_id=s.id
-# left join (select user_id,sum(recharge_money) as historyrecharge
-#  from user_account_log
-#  where recharge_money>0
-#  and DATE(create_time)<='%s'
-#  group by user_id ) as t on r.user_id=t.user_id
-# left join (select user_id,sum(recharge_money) as recharge
-#  from user_account_log
-#  where recharge_money>0
-#  and DATE(create_time)='%s'
-#  group by user_id ) as u on r.user_id=u.user_id
-# order by r.room_id,r.user_id""" % (adate,adate,adate,adate)
-#
-# cursor = cnxn.cursor()
-#
-# cursor.execute(sql)
-# result=cursor.fetchall()
-# print (result)
-# print type(result)
-#
-# cursor.close()
-# cnxn.close()
+print '开始查询mysql'
+# 查询mysql  竞猜用户
+into_db = ("rr-bp1mku8v6xlq45tpco.mysql.rds.aliyuncs.com", "loujianfeng", "FeTuH9bo6fakUw9", "utf8","live_core")
+
+cnxn = MySQLdb.connect(host=into_db[0], user=into_db[1], passwd=into_db[2], charset=into_db[3], db=into_db[4])
+
+sql = """select DISTINCT r.room_id,r.user_id,s.nickname,s.create_time,t.historyrecharge,u.recharge,r.xnum,r.recharge_money,r.award
+from
+(
+select b.room_id,a.user_id,sum(a.xiazhu) as recharge_money,sum(a.rew) as award,sum(a.num) xnum
+from
+(select user_id,question_id,sum(quizzes_amount) as xiazhu ,sum(reward_amount) as rew,count(user_id) as num
+from jc_quiz
+where left(quiz_time,10)='%s'
+GROUP BY user_id,question_id
+ORDER BY user_id,question_id
+) as a ,
+(select id,room_id from jc_quiz_question where left(start_time,10)='%s') as b
+where a.question_id=b.id
+group by b.room_id,a.user_id
+ORDER BY b.room_id
+) as r left join
+user as s
+on r.user_id=s.id
+left join (select user_id,sum(recharge_money) as historyrecharge
+ from user_account_log
+ where recharge_money>0
+ and DATE(create_time)<='%s'
+ group by user_id ) as t on r.user_id=t.user_id
+left join (select user_id,sum(recharge_money) as recharge
+ from user_account_log
+ where recharge_money>0
+ and DATE(create_time)='%s'
+ group by user_id ) as u on r.user_id=u.user_id
+order by r.room_id,r.user_id""" % (adate,adate,adate,adate)
+
+cursor = cnxn.cursor()
+
+cursor.execute(sql)
+result=cursor.fetchall()
+print (result)
+print type(result)
+
+cursor.close()
+cnxn.close()
 
 
 """写入excel"""

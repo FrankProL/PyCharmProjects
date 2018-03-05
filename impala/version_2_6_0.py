@@ -11,13 +11,13 @@ import pandas as pd
 import MySQLdb
 from impala.dbapi import connect
 
-adate='2018-03-01'
-bdate='20180301'
+adate='2018-02-26'
+bdate='20180226'
 # adate='2018-02-14'
 # bdate='20180214'
 
 # 查询mysql  2.6.0版本新增注册用户数
-into_db = ("rr-bp1o90m39oporf1g1o.mysql.rds.aliyuncs.com", "loujianfeng", "FeTuH9bo6fakUw9", "utf8","live_core")
+into_db = ("rr-bp1mku8v6xlq45tpco.mysql.rds.aliyuncs.com", "loujianfeng", "FeTuH9bo6fakUw9", "utf8","live_core")
 
 cnxn = MySQLdb.connect(host=into_db[0], user=into_db[1], passwd=into_db[2], charset=into_db[3], db=into_db[4])
 
@@ -72,17 +72,28 @@ print '升级到2.6.0用户数'
 print result
 
 # 未升级用户数
-sql="""select platformflag,count(distinct uid)
+sql="""select t.platformflag,count(t.uid)
+from (
+select a.platformflag,a.uid,b.uid as buid
+from 
+(
+select distinct platformflag,uid
 from ssets_logs210_app
 where day='%s'
 and client_version<>'2.6.0'
 and uid<>'0'
-and uid not in (select distinct uid
+) as a 
+left join 
+(select distinct platformflag,uid
  from ssets_logs210_app
  where day='%s'
  and client_version='2.6.0'
- and uid<>'0')
-group by platformflag""" % (bdate,bdate)
+ and uid<>'0'
+) as b 
+on a.uid=b.uid and a.platformflag=b.platformflag
+) as t 
+where buid is null 
+group by t.platformflag""" % (bdate,bdate)
 cur.execute(sql)
 result=cur.fetchall()
 print '未升级用户数'
