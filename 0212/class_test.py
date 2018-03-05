@@ -115,9 +115,28 @@ class Email(Property):
             raise ValueError('Email address is not valid')
         setattr(instance,self._name,value)
 
-
+""" 方法
+    实例方法
+        第一个参数是self，绑定到实例
+    类方法
+        @classmethod
+        第一个参数时cls，绑定到类
+    静态方法
+        @staticmethod
+        和普通函数一样，无绑定
+    特殊方法
+        __init__、…… Python内置函数
+        构造函数、析构函数
+            __new__、__init__、__del__
+        四则运算：+-*/
+            __add__、__sub__、__mul__、__dev__
+        比较：> <
+            __lt__、__gt__、__cmp__
+        其他
+            __str__、__repr__、__contains__、__bool__
+    
+"""
 class Chinese(object):
-
 
     ID = Property('id',int)
     Name = Property('name',str)
@@ -141,7 +160,7 @@ class Chinese(object):
     def __str__(self):
         return 'ID = {0} , Name = {1} ,Email = {2}'.format(self.ID,self.Name,self.Email)
 
-    def __repr__(self):
+    def __repr__(self):                     # 命令行直接输入对象名字，返回__repr__的返回值
         return 'ID={0}'.format(self.ID)
 
     def __add__(self,other):
@@ -157,5 +176,5 @@ class JiLin(Chinese):
 dasheng = JiLin.getPeopleByParents('mather','father')
 bajie = JiLin.getPeopleBySibling('dasheng')
 
-print dasheng
+print dasheng       # 调用的是__str__函数
 print bajie

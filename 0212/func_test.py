@@ -198,12 +198,18 @@ print f1(10,20)
 #     return z
 # f2(10,20)
 
-"""迭代器
+"""迭代器：Iterator
+        遍历可迭代对象内容的方式
    permutations 排列
    combinations 组合
    product 笛卡尔积
    repeat 重复
    chain 链接一组迭代器
+   
+   可迭代对象：Iterable
+        如果一个对象可以用for …… in ……的方式遍历其内容，这个对象就是一个可迭代对象
+        可迭代对象需要提供迭代器
+            实现__iter__、__next__
 """
 import itertools
 x = range(1,10)
@@ -229,7 +235,7 @@ for i in c:
    生成器就是能够生成迭代器的东西
    生成器表达式得到的是生成器，而不是列表
    生成器函数
-   yield
+        yield  
 """
 def inc(n=1):
     while True:
