@@ -85,7 +85,7 @@ if result:
 else:
     print result
 
-sql="""select user_id,sum(recharge_money) as historyrecharge
+sql="""select user_id,sum(recharge_money) as dayrecharge
  from stats_user_recharge_v1
  where recharge_money>0
  and create_time_day='%s'
