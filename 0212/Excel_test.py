@@ -43,7 +43,7 @@ print type(table1)
 # x2=xlsx_file.parse(1)
 
 # excel文件的写出,只有DataFrame对象才能使用to_excel方法。
-# pd.DataFrame(data).to_excel("abc.xlsx",sheet_name="123",index=False,header=True)
+# pd.DataFrame(data).to_excel("abc.xlsx",sheet_name="123.txt",index=False,header=True)
 # excel文件和pandas的交互读写，主要使用到pandas中的两个函数,一个是pd.ExcelFile函数,一个是to_excel函数
 
 """另一种读取方式"""

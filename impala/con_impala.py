@@ -392,7 +392,7 @@ else:
 cursor.close()
 cnxn.close()
 
-# ------------------------------
+# ---------查询竞猜用户累计充值和当日充值金额---------------
 if result:
     conn = connect(host='lg-15-163.ko.cn',port=21050)
     cur = conn.cursor()
