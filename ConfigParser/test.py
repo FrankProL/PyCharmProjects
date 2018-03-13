@@ -4,7 +4,7 @@
 # @Time    : 2018/3/9 14:47
 # @Author  : Frank
 # @Site    : 
-# @File    : test.py
+# @File    : test_fp_growth.py
 # @Software: PyCharm
 """
 import ConfigParser

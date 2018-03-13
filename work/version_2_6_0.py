@@ -37,7 +37,7 @@ print (result)
 cursor.close()
 cnxn.close()
 
-"""=====================impala====================================="""
+"""=====================work====================================="""
 conn = connect(host='lg-15-163.ko.cn',port=21050)
 cur = conn.cursor()
 

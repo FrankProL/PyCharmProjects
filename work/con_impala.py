@@ -4,7 +4,7 @@
 # @Time    : 2018/2/23 9:24
 # @Author  : Frank
 # @Site    : 
-# @File    : con_impala.py
+# @File    : jdbc_impala.py
 # @Software: PyCharm
 """
 import pandas as pd

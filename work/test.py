@@ -4,7 +4,7 @@
 # @Time    : 2018/3/5 11:27
 # @Author  : Frank
 # @Site    : 
-# @File    : test.py.py
+# @File    : test_fp_growth.py.py
 # @Software: PyCharm
 """
 import MySQLdb

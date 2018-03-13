@@ -3,6 +3,8 @@
 .idea/
 /venv/
 *.pyc
+*.xlsx
+*.xls
 
 # Built application files
 *.apk
