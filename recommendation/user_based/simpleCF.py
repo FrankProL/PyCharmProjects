@@ -137,11 +137,11 @@ if __name__ == "__main__":
 
         # display recommend result (top-10 results)
         for i, rating in pred:
-            print ' user: %s,  film: %s,  rating: %s' % (user, movies[i], rating)
+            print (' user: %s,  film: %s,  rating: %s' % (user, movies[i], rating))
             j += 1
-    print "总共生成", j, "次推荐。"
-    print len(recomList)
-    print recomList['1']
+    print ("总共生成", j, "次推荐。")
+    print (len(recomList))
+    print (recomList['1'])
     output = open('./Recom/recommendationList5.pkl', 'wb')
 
     # Pickle dictionary using protocol 0.
