@@ -120,7 +120,7 @@ class Email(Property):
         第一个参数是self，绑定到实例
     类方法
         @classmethod
-        第一个参数时cls，绑定到类
+        第一个参数是cls，绑定到类
     静态方法
         @staticmethod
         和普通函数一样，无绑定
@@ -146,7 +146,9 @@ class Chinese(object):
         self.ID = id
         self.Name=name
         self.Email = email
-
+    """
+    类方法、静态方法功能上都相当于构造函数
+    """
     @staticmethod
     def getPeopleByParents(mather,father):
         print mather,father
@@ -172,9 +174,26 @@ class Chinese(object):
 class JiLin(Chinese):
     pass
 
-
+"""通过类调用静态方法和类方法，Chinese或者JiLin（吉林继承自Chinese）"""
 dasheng = JiLin.getPeopleByParents('mather','father')
 bajie = JiLin.getPeopleBySibling('dasheng')
 
-print dasheng       # 调用的是__str__函数
+"""print 对象名字，调用的是__str__函数"""
+"""命令行直接输入对象名字，返回__repr__的返回值，没有定义时，返回对象地址"""
+print dasheng
 print bajie
+
+"""静态方法和类方法的区别：类方法可以获取类实例，能够利用类和类的继承关系"""
+print type(dasheng)
+print type(bajie)
+
+"""
+多重继承  菱形继承问题
+经典类：深度优先
+新式类：广度优先？
+inspect.getmro(class)
+"""
+
+"""super(子类名字，self)
+   self放在后面，super只用于新式类
+"""
