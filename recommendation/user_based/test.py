@@ -4,7 +4,7 @@
 # @Time    : 2018/3/12 18:07
 # @Author  : Frank
 # @Site    : 
-# @File    : test.py
+# @File    : onelinepy.py
 # @Software: PyCharm
 """
 dict = {'a': 1, 'b': 2, 'c': 3, 'd': 4}

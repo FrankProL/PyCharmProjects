@@ -4,7 +4,7 @@
 # @Time    : 2018/3/14 14:05
 # @Author  : Frank
 # @Site    : 
-# @File    : test.py
+# @File    : onelinepy.py
 # @Software: PyCharm
 """
 import csv
@@ -24,10 +24,10 @@ parse_date = lambda r, k: datetime.strptime(r[k], '%d-%b-%Y') if r[k] else None
 with open('u.item', 'rb') as movies:
     reader = csv.DictReader(movies, **options)
 
-    column=[row['release'] for row in reader]
+    # column=[row['release'] for row in reader]
     # print column
     t=0
-    for row in reader:
+    for row in reader:                                  # 文件读取一次，当reader遍历一次之后，就指向空了
         print (type(row))
         print (row)
         row['movieid'] = parse_int(row, 'movieid')
@@ -35,9 +35,8 @@ with open('u.item', 'rb') as movies:
         row['release'] = parse_date(row, 'release')
         print (row['release'])
         print (row['video'])
-        break
-    print row
-    print row['release']
+        if t<10:
+            break
 
 # from rec_movies import load_reviews
 # reviews = defaultdict(dict)
