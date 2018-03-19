@@ -58,7 +58,6 @@ def load_data_set_new1():
                 data_set.append(list(data[key]))
         # print data_set
         print (len)
-        f.close()
         return data_set
 
 
@@ -68,12 +67,19 @@ def load_data_set_new2():
         'delimiter': '\t'
     }
     with open("user_room.txt") as f:
-        reader=csv.dictreader(f,**options)
+        reader=csv.DictReader(f,**options)
         print type(reader)
-        print reader
+        data_set = []
+        data = defaultdict(set)
         for row in reader:
-            # print row
-            yield row
+            data[row['userid']].add(row['roomid'])
+        for key in sorted(data.keys()):
+            if len(data[key]) > 1:
+                # print key,'--->',list(data[key])
+                data_set.append(list(data[key]))
+        # print data_set
+        print (len)
+        return data_set
 
 
 def load_data_set2():
@@ -262,16 +268,16 @@ if __name__ == "__main__":
     """
     data_set = load_data_set_new2()
     print data_set
-    # L, support_data = generate_L(data_set, k=3, min_support=0.02)
-    # big_rules_list = generate_big_rules(L, support_data, min_conf=0.5)
-    # for Lk in L:
-    #     print "="*50
-    #     # print list(Lk)
-    #     print "frequent " + str(len(list(Lk)[0])) + "-itemsets\t\tsupport"
-    #     print "="*50
-    #     for freq_set in Lk:
-    #         print freq_set, support_data[freq_set]
-    # print
-    # print "Big Rules"
-    # for item in big_rules_list:
-    #     print item[0], "=>", item[1], "conf: ", item[2]
+    L, support_data = generate_L(data_set, k=3, min_support=0.02)
+    big_rules_list = generate_big_rules(L, support_data, min_conf=0.5)
+    for Lk in L:
+        print "="*50
+        # print list(Lk)
+        print "frequent " + str(len(list(Lk)[0])) + "-itemsets\t\tsupport"
+        print "="*50
+        for freq_set in Lk:
+            print freq_set, support_data[freq_set]
+    print
+    print "Big Rules"
+    for item in big_rules_list:
+        print item[0], "=>", item[1], "conf: ", item[2]

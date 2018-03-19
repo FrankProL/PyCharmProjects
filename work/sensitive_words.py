@@ -9,7 +9,9 @@
 """
 from collections import defaultdict
 from impala.dbapi import connect
-
+"""
+    统计用户发言中包含敏感词的条数、和用户数
+"""
 
 with open("sensitive_words.txt") as f:
     data =[]
