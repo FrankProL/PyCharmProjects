@@ -1,4 +1,8 @@
 # encoding: utf-8
+import csv
+from collections import defaultdict
+
+
 def load_data_set():
     """
     加载数据
@@ -7,14 +11,14 @@ def load_data_set():
     20180110用户数509
     处理后数据集509 {uid,set(roomid)}
     """
-    f=open("user_room.txt")
-    lines =f.readlines()
-    i=0
+    f = open("user_room.txt")
+    lines = f.readlines()
+    i = 0
     data = {}
 
     for line in lines:
-        line=line.strip('\n')
-        user=line.split("\t")
+        line = line.strip('\n')
+        user = line.split("\t")
         # print user[0]
         # print user[1]
         transcations = set()
@@ -22,14 +26,14 @@ def load_data_set():
         if data.has_key(user[0]):
             data[user[0]].add(user[1])
         else:
-            data[user[0]]=transcations
-            i+=1
-    data_set=[]
+            data[user[0]] = transcations
+            i += 1
+    data_set = []
     for key in sorted(data.keys()):
         # print key,
         # print '--->',
         # print list(data[key])
-        if len(data[key])>1:
+        if len(data[key]) > 1:
             # print key,'--->',list(data[key])
             data_set.append(list(data[key]))
     # print data_set
@@ -37,6 +41,40 @@ def load_data_set():
     print (len)
     f.close()
     return data_set
+
+
+def load_data_set_new1():
+    """优化重写load_data_set()"""
+    with open("user_room.txt") as f:
+        data = defaultdict(set)
+        for line in f:
+            line = line.strip('\n')
+            user = line.split('\t')
+            data[user[0]].add(user[1])
+        data_set = []
+        for key in sorted(data.keys()):
+            if len(data[key]) > 1:
+                # print key,'--->',list(data[key])
+                data_set.append(list(data[key]))
+        # print data_set
+        print (len)
+        f.close()
+        return data_set
+
+
+def load_data_set_new2():
+    options = {
+        'fieldnames': ('userid', 'roomid'),
+        'delimiter': '\t'
+    }
+    with open("user_room.txt") as f:
+        reader=csv.dictreader(f,**options)
+        print type(reader)
+        print reader
+        for row in reader:
+            # print row
+            yield row
+
 
 def load_data_set2():
     """
@@ -47,35 +85,36 @@ def load_data_set2():
     处理后数据集21985 {day_uid,set(roomid)}
     """
     # f=open("user_room_month.txt")
-    f=open("user_room_3days.txt")   # 原数据集2356，处理后1922, 3天用户数1626
-    lines =f.readlines()
-    i=0
+    f = open("user_room_3days.txt")  # 原数据集2356，处理后1922, 3天用户数1626
+    lines = f.readlines()
+    i = 0
     data = {}
 
     for line in lines:
-        line=line.strip('\n')
-        user=line.split("\t")
+        line = line.strip('\n')
+        user = line.split("\t")
         transcations = set()
         transcations.add(user[2])
-        dayitem='%s%s%s' % (user[0], '_', user[1])
+        dayitem = '%s%s%s' % (user[0], '_', user[1])
         if data.has_key(dayitem):
             data[dayitem].add(user[2])
         else:
-            data[dayitem]=transcations
-            i+=1
-    data_set=[]
+            data[dayitem] = transcations
+            i += 1
+    data_set = []
     for key in sorted(data.keys()):
         # print key,
         # print '--->',
         # print list(data[key])
-        if len(data[key])>1:
+        if len(data[key]) > 1:
             # print key,'--->',list(data[key])
             data_set.append(list(data[key]))
     # print data_set
     print (i)
-    print len(data)         #每个用户每日的set(roomid)的集合
+    print len(data)  # 每个用户每日的set(roomid)的集合
     f.close()
     return data_set
+
 
 def create_C1(data_set):
     """
@@ -130,7 +169,7 @@ def create_Ck(Lksub1, k):
             l2 = list(list_Lksub1[j])
             l1.sort()
             l2.sort()
-            if l1[0:k-2] == l2[0:k-2]:
+            if l1[0:k - 2] == l2[0:k - 2]:
                 Ck_item = list_Lksub1[i] | list_Lksub1[j]
                 # pruning
                 if is_apriori(Ck_item, Lksub1):
@@ -183,7 +222,7 @@ def generate_L(data_set, k, min_support):
     Lksub1 = L1.copy()
     L = []
     L.append(Lksub1)
-    for i in range(2, k+1):
+    for i in range(2, k + 1):
         Ci = create_Ck(Lksub1, i)
         Li = generate_Lk_by_Ck(data_set, Ci, min_support, support_data)
         Lksub1 = Li.copy()
@@ -221,17 +260,18 @@ if __name__ == "__main__":
     """
     Test
     """
-    data_set = load_data_set()
-    L, support_data = generate_L(data_set, k=3, min_support=0.02)
-    big_rules_list = generate_big_rules(L, support_data, min_conf=0.5)
-    for Lk in L:
-        print "="*50
-        # print list(Lk)
-        print "frequent " + str(len(list(Lk)[0])) + "-itemsets\t\tsupport"
-        print "="*50
-        for freq_set in Lk:
-            print freq_set, support_data[freq_set]
-    print
-    print "Big Rules"
-    for item in big_rules_list:
-        print item[0], "=>", item[1], "conf: ", item[2]
+    data_set = load_data_set_new2()
+    print data_set
+    # L, support_data = generate_L(data_set, k=3, min_support=0.02)
+    # big_rules_list = generate_big_rules(L, support_data, min_conf=0.5)
+    # for Lk in L:
+    #     print "="*50
+    #     # print list(Lk)
+    #     print "frequent " + str(len(list(Lk)[0])) + "-itemsets\t\tsupport"
+    #     print "="*50
+    #     for freq_set in Lk:
+    #         print freq_set, support_data[freq_set]
+    # print
+    # print "Big Rules"
+    # for item in big_rules_list:
+    #     print item[0], "=>", item[1], "conf: ", item[2]
