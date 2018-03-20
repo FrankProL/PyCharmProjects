@@ -42,6 +42,7 @@ def find_frequent_itemsets(transactions, minimum_support, include_support=False)
     # Build our FP-tree. Before any transactions can be added to the tree, they
     # must be stripped of infrequent items and their surviving items must be
     # sorted in decreasing order of frequency.
+    # （构建FP-tree前，原始数据必须去除非频繁项，并将原始数据每一行按照support降序排列）
     def clean_transaction(transaction):
         transaction = filter(lambda v: v in items, transaction)
         transaction.sort(key=lambda v: items[v], reverse=True)
