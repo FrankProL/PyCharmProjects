@@ -27,3 +27,5 @@ new=pd.merge(useraccount,log,how='left',on='user_id')
 new2=pd.merge(new,log2,how='left',on='user_id')
 new2=new2.fillna(0)
 new2.to_csv('merge_result.csv',sep=',',encoding='utf-8',index=False)
+
+# 测试
