@@ -402,7 +402,7 @@ if result:
      where recharge_money>0
      and create_time_day<='%s'
      and user_id in (%s)
-     group by user_id""" % (bdate,userlist)
+     group by user_id""" % (adate,userlist)
     cur.execute(sql)
     result=cur.fetchall()
     if result:
