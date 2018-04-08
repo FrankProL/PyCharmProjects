@@ -7,6 +7,7 @@
 # @File    : lrc_test.py
 # @Software: PyCharm
 """
+import chardet
 import requests
 from bs4 import BeautifulSoup
 import json
@@ -42,16 +43,21 @@ def get_singer_info(html):
 def get_lyric(song_id):
     url = 'http://music.163.com/api/song/lyric?' + 'id=' + str(song_id) + '&lv=1&kv=1&tv=-1'
     html=get_html(url)
-    json_obj=json.loads(html)
-    initial_lyric=json_obj['lrc']['lyric']
-    regex=re.compile(r'\[.*\]')
-    final_lyric=re.sub(regex,'',initial_lyric).strip()
-    return final_lyric
+    try:
+        json_obj=json.loads(html)
+        initial_lyric=json_obj['lrc']['lyric']
+        regex=re.compile(r'\[.*\]')
+        final_lyric=re.sub(regex,'',initial_lyric).strip()
+        return final_lyric
+    except:
+        print ('json异常------------'+url)
+        final_lyric=url
+        return final_lyric
 
 def write_text(song_name,lyric):
     print (u'正在写入歌曲，{}'.format(song_name))
-    # with open(u'{}.txt'.format(song_name),'a') as fp:
-    #     fp.write(lyric)
+    with open(u'{}.txt'.format(song_name),'a') as fp:
+        fp.write(lyric.encode('utf-8'))
 
 if __name__ == '__main__':
     singer_id=input('请输入歌手id')
