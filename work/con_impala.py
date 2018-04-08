@@ -19,8 +19,8 @@ adate = yesterday.strftime('%Y-%m-%d')
 bdate = yesterday.strftime('%Y%m%d')
 print adate,bdate
 
-# adate='2018-02-09'
-# bdate='20180209'
+#adate='2018-03-15'
+#bdate='20180315'
 
 # adate='2018-02-14'
 # bdate='20180214'
