@@ -12,7 +12,7 @@ import random
 
 def buildMaxHeap(arr):
     import math
-    for i in range(int(math.floor(len(arr) / 2)), -1, -1):
+    for i in range(int(math.floor(len(arr) / 2)), -1, -1):  # (n/2-1)~0的节点才有子节点,初始化大顶堆时 是从最后一个有子节点开始往上调整最大堆
         heapify(arr, i)
 
 

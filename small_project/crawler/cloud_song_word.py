@@ -7,12 +7,12 @@
 # @File    : cloud_song_word.py
 # @Software: PyCharm
 """
-# -*- coding:utf-8 -*-
 import requests
 from bs4 import BeautifulSoup
 import json
 import re
 
+# """调用api，根据歌曲id获取歌词"""
 # lrc_url = 'http://music.163.com/api/song/lyric?' + 'id=' + str(191232) + '&lv=1&kv=1&tv=-1'
 # lyric = requests.get(lrc_url)
 # json_obj = lyric.text
@@ -22,38 +22,45 @@ import re
 # lrc = re.sub(pat, "", lrc)
 # lrc = lrc.strip()
 # print(lrc)
+
+
+# 添加headers和反盗链referer以模拟浏览器，防止被网站拒绝访问
 headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36',
         'Referer': 'http://music.163.com/',
         'Host': 'music.163.com'}
 
-singer_url = 'http://music.163.com/artist?id=' + str(6731)
-web_data = requests.get(singer_url,headers=headers)
-soup = BeautifulSoup(web_data.text, 'lxml')
-singer_name = soup.select("#artist-name")
-r = soup.find('ul', {'class': 'f-hide'}).find_all('a')
-r = (list(r))
-music_id_set=[]
-for each in r:
-    song_name = each.text  # print(each.text)
-    song_id = each.attrs["href"]
-    music_id_set.append(song_id[9:])
-print(music_id_set)
 
-
-# top50_singer_url = 'http://music.163.com/playlist?id=119712779'
-# web_data = requests.get(top50_singer_url)
+# """通过歌手id，获取歌曲id列表"""
+# singer_url = 'http://music.163.com/artist?id=' + str(6731)
+# web_data = requests.get(singer_url,headers=headers)
 # soup = BeautifulSoup(web_data.text, 'lxml')
-#
-# R = soup.textarea.text  # 找到歌手ID所在的标签
-#
-# json_obj = json.loads(R)
-# top50_singer_ID_set = []
-# for each in json_obj:
-#     singer_ID = each['artists'][0]['id']
-#     top50_singer_ID_set.append(singer_ID)  # 将排名前50的歌手的id存进一个列表
-#
-#
+# singer_name = soup.select("#artist-name")
+# r = soup.find('ul', {'class': 'f-hide'}).find_all('a')
+# r = (list(r))
+# music_id_set=[]
+# for each in r:
+#     song_name = each.text  # print(each.text)
+#     song_id = each.attrs["href"]
+#     music_id_set.append(song_id[9:])
+# print(music_id_set)
+
+
+top50_singer_url = 'http://music.163.com/playlist?id=119712779'
+web_data = requests.get(top50_singer_url,headers=headers)
+
+soup = BeautifulSoup(web_data.text, 'lxml')
+
+R = soup.textarea.text  # 找到歌手ID所在的标签
+print R
+json_obj = json.loads(R)
+top50_singer_ID_set = []
+for each in json_obj:
+    singer_ID = each['artists'][0]['id']
+    top50_singer_ID_set.append(singer_ID)  # 将排名前50的歌手的id存进一个列表
+print(top50_singer_ID_set)
+
+
 # def func(singer_ID1):  # 定义一个函数，通过一个歌手的id下载其最火的五十首歌的全部歌词
 #
 #
