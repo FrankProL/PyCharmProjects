@@ -16,9 +16,9 @@ import random
 
 
 def select_sort(arr):
-    for j in range(0, len(arr)):
+    for j in range(0, len(arr)):            # 当前未排序序列
         tmp = arr[j]
-        for i in range(j + 1, len(arr)):
+        for i in range(j + 1, len(arr)):    # 找剩余元素最小值，并添加到有序序列的下一个位置
             if arr[i] < tmp:
                 tmp = arr[i]
                 arr[j], arr[i] = arr[i], arr[j]
