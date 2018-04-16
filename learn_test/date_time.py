@@ -6,6 +6,8 @@ print time.time()
 print time.localtime(time.time())
 print time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
 print time.strftime('%Y-%m-%d %H:%M:%S')
+print time.ctime(time.time())
+print time.asctime()
 
 '''
 time.strftime里面有很多参数，可以让你能够更随意的输出自己想要的东西：
