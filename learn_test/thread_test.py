@@ -7,6 +7,10 @@
 # @File    : thread_test.py
 # @Software: PyCharm
 """
+"""Python中使用线程有两种方式：函数或者用类来包装线程对象
+        函数式：调用thread模块中的start_new_thread()函数来产生新线程。语法如下:
+            thread.start_new_thread ( function, args[, kwargs] )
+"""
 import thread
 import time
 
