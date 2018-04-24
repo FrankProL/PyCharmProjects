@@ -37,5 +37,5 @@ def shell_sort(arr):
 
 if __name__ == '__main__':
     data = [random.randint(1, 100) for i in range(10)]
-    print data
-    print shell_sort(data)
+    print (data)
+    print (shell_sort(data))
