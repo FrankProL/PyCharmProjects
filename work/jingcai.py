@@ -15,10 +15,10 @@ from datetime import timedelta, datetime
 
 yesterday = datetime.today() + timedelta(-1)
 print (yesterday)
-adate = yesterday.strftime('%Y-%m-%d')
-bdate = yesterday.strftime('%Y%m%d')
-# adate='2018-04-05'
-# bdate='20180405'
+# adate = yesterday.strftime('%Y-%m-%d')
+# bdate = yesterday.strftime('%Y%m%d')
+adate='2018-04-22'
+bdate='20180422'
 print (adate, bdate)
 
 print '开始查询mysql'
