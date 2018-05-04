@@ -116,7 +116,7 @@ def fundoc():
 fundoc()
 print fundoc.__doc__
 
-print help(fundoc)
+# print help(fundoc)
 
 """函数式编程，函数也是对象，可以给函数增加属性"""
 """python函数可以嵌套定义，
