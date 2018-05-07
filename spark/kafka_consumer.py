@@ -45,12 +45,12 @@ print (consumer.topics())  # 获取主题列表
 print (consumer.subscription())  # 获取当前消费者订阅的主题
 print (consumer.assignment())  # 获取当前消费者topic、分区信息
 print (consumer.beginning_offsets(consumer.assignment()))  # 获取当前消费者可消费的偏移量
-consumer.seek(TopicPartition(topic=u'phone-game-userinfo', partition=0), 50)  # 重置偏移量，从第50个偏移量消费
+consumer.seek(TopicPartition(topic=u'phone-game-userinfo', partition=0), 100875)  # 重置偏移量，从第50个偏移量消费
 for message in consumer:
-    # print ("%s:%d:%d: key=%s value=%s" % (message.topic, message.partition,
-    #                                       message.offset, message.key,
-    #                                       message.value.decode('utf-8')))
-    # print (message)
+    print ("%s:%d:%d: key=%s value=%s" % (message.topic, message.partition,
+                                          message.offset, message.key,
+                                          message.value.decode('utf-8')))
+    print (message)
     data = message.value[16:-1].split(',')
     guid = data[0].split('=')[1]
     ip = data[14].split('=')[1]
@@ -63,23 +63,24 @@ for message in consumer:
     line = [guid, ip, createTime, userAccount]
     datalist.append(line)
     i += 1
-    if i > 100000:
+    if i > 100:
         break
 df = pd.DataFrame(datalist, index=None, columns=['guid', 'ip', 'createTime', 'userAccount'])
+print df
 
-with open('ip_addr.txt','r') as ipaddr:
-    for line in ipaddr:
-        try:
-            a=json.loads(line)
-            ip_reg=[a[u'data'][u'ip'].strip('\r\n'),a[u'data'][u'region']]
-            iplist.append(ip_reg)
-        except:
-            pass
-df_ip=pd.DataFrame(iplist,columns=['ip','region'])
-
-df_result=pd.merge(df,df_ip,on='ip',suffixes=('','_r'),how='left')
-region_result=pd.DataFrame(df_result.groupby(['region'])['guid'].count().sort_values())
-region_result.to_excel('region.xlsx')
+# with open('ip_addr.txt','r') as ipaddr:
+#     for line in ipaddr:
+#         try:
+#             a=json.loads(line)
+#             ip_reg=[a[u'data'][u'ip'].strip('\r\n'),a[u'data'][u'region']]
+#             iplist.append(ip_reg)
+#         except:
+#             pass
+# df_ip=pd.DataFrame(iplist,columns=['ip','region'])
+#
+# df_result=pd.merge(df,df_ip,on='ip',suffixes=('','_r'),how='left')
+# region_result=pd.DataFrame(df_result.groupby(['region'])['guid'].count().sort_values())
+# region_result.to_excel('region.xlsx')
 
 # writefile(df['ip'])
 # toSave=df.groupby(['createTime'])['guid'].count()
