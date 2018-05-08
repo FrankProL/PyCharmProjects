@@ -7,6 +7,13 @@
 # @File    : spark_kafka.py
 # @Software: PyCharm
 """
+from __future__ import print_function
+
+import sys
+
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import explode
+from pyspark.sql.functions import split
 """
  Consumes messages from one or more topics in Kafka and does wordcount.
  Usage: structured_kafka_wordcount.py <bootstrap-servers> <subscribe-type> <topics>
@@ -28,13 +35,6 @@ Run the example
    `$ bin/spark-submit examples/src/main/python/sql/streaming/structured_kafka_wordcount.py \
    host1:port1,host2:port2 subscribe topic1,topic2`
 """
-from __future__ import print_function
-
-import sys
-
-from pyspark.sql import SparkSession
-from pyspark.sql.functions import explode
-from pyspark.sql.functions import split
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
@@ -58,19 +58,23 @@ if __name__ == "__main__":
         .format("kafka")\
         .option("kafka.bootstrap.servers", bootstrapServers)\
         .option(subscribeType, topics)\
+        .option("startingOffsets","""{"phone-game-userinfo":{"0":201700}}""")\
         .load()\
         .selectExpr("CAST(value AS STRING)")
+    print (type(lines))
+    print(lines.value)
+
 
     # Split the lines into words
     words = lines.select(
         # explode turns each item in an array into a separate row
         explode(
-            split(lines.value, ' ')
+            split(lines.value, '=')
         ).alias('word')
     )
 
     # Generate running word count
-    wordCounts = words.groupBy('word').count()
+    wordCounts = words.groupBy('word').count().sort('count')
 
     # Start running the query that prints the running counts to the console
     query = wordCounts\
