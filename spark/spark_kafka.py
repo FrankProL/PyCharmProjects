@@ -49,7 +49,7 @@ if __name__ == "__main__":
 
     spark = SparkSession\
         .builder\
-        .appName("StructuredKafkaWordCount")\
+        .appName("StructuredKafka")\
         .getOrCreate()
 
     # Create DataSet representing the stream of input lines from kafka
@@ -61,8 +61,6 @@ if __name__ == "__main__":
         .option("startingOffsets","""{"phone-game-userinfo":{"0":201700}}""")\
         .load()\
         .selectExpr("CAST(value AS STRING)")
-    print (type(lines))
-    print(lines.value)
 
 
     # Split the lines into words
