@@ -12,7 +12,10 @@ import time
 import pandas as pd
 import json
 from kafka import KafkaConsumer, TopicPartition
-
+"""
+python读取kafka数据
+https://kafka-python.readthedocs.io/en/master/apidoc/KafkaConsumer.html
+"""
 
 def writefile(L=[]):
     with open('ip.txt', 'w') as f:
@@ -112,3 +115,25 @@ for message in consumer:
 #     i+=1
 #     if i>100:
 #         break
+
+"""消费者(消息挂起与恢复)"""
+# from kafka import KafkaConsumer
+# from kafka.structs import TopicPartition
+# import time
+#
+# consumer = KafkaConsumer(bootstrap_servers=['172.21.10.136:9092'])
+# consumer.subscribe(topics=('test'))
+# consumer.topics()
+# consumer.pause(TopicPartition(topic=u'test', partition=0))
+# num = 0
+# while True:
+#     print num
+#     print consumer.paused()   #获取当前挂起的消费者
+#     msg = consumer.poll(timeout_ms=5)
+#     print msg
+#     time.sleep(2)
+#     num = num + 1
+#     if num == 10:
+#         print "resume..."
+#         consumer.resume(TopicPartition(topic=u'test', partition=0))
+#         print "resume......"
