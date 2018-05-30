@@ -14,6 +14,7 @@ import json
 from kafka import KafkaConsumer, TopicPartition
 """
 python读取kafka数据
+https://pypi.org/project/kafka/
 https://kafka-python.readthedocs.io/en/master/apidoc/KafkaConsumer.html
 """
 
@@ -42,19 +43,21 @@ i = 0
 
 """消费者(手动设置偏移量)"""
 # consumer = KafkaConsumer('phone-game-userinfo', bootstrap_servers=['172.23.11.150:9092'])
-consumer = KafkaConsumer('phone-game-userlogin-kong', bootstrap_servers=['172.23.11.150:9092'])
+# consumer = KafkaConsumer('phone-game-userlogin-kong', bootstrap_servers=['172.23.11.150:9092'])
+consumer = KafkaConsumer('kzmg_hunter_login', bootstrap_servers=['172.23.11.150:9092'])
 print (consumer.partitions_for_topic("phone-game-userinfo"))  # 获取phone-game-userinfo主题的分区信息
-print (consumer.topics())  # 获取主题列表
+print (consumer.topics())  # 获取主题列表         必须项
 print (consumer.subscription())  # 获取当前消费者订阅的主题
 print (consumer.assignment())  # 获取当前消费者topic、分区信息
 print (consumer.beginning_offsets(consumer.assignment()))  # 获取当前消费者可消费的偏移量
 # consumer.seek(TopicPartition(topic=u'phone-game-userinfo', partition=0), 100875)  # 重置偏移量，从第50个偏移量消费
-consumer.seek(TopicPartition(topic=u'phone-game-userlogin-kong', partition=0), 100)
+# consumer.seek(TopicPartition(topic=u'phone-game-userlogin-kong', partition=0), 100)
+consumer.seek(TopicPartition(topic=u'kzmg_hunter_login', partition=0), 100)
 for message in consumer:
-    print ("%s:%d:%d: key=%s value=%s" % (message.topic, message.partition,
-                                          message.offset, message.key,
-                                          message.value.decode('utf-8')))
-    # print (message)
+    # print ("%s:%d:%d: key=%s value=%s" % (message.topic, message.partition,
+    #                                       message.offset, message.key,
+    #                                       message.value.decode('utf-8')))
+    print (message.value)
 #     data = message.value[16:-1].split(',')
 #     guid = data[0].split('=')[1]
 #     ip = data[14].split('=')[1]
@@ -137,3 +140,5 @@ for message in consumer:
 #         print "resume..."
 #         consumer.resume(TopicPartition(topic=u'test', partition=0))
 #         print "resume......"
+
+consumer.close()

@@ -33,11 +33,10 @@ if __name__ == "__main__":
         .writeStream \
         .outputMode('complete') \
         .format('console') \
-        .option('n','30') \
+        .option('n','10') \
         .start()
     query.awaitTermination()
     # query=count.writeStream.format("csv") \
-    #             .outputMode('update')\
     #             .option("checkpointLocation","/opt/modules/spark-2.3.0-bin-hadoop2.7/script" )\
     #             .option("path","/opt/modules/spark-2.3.0-bin-hadoop2.7/script").start()
 

@@ -11,40 +11,12 @@ from hdfs.client import Client
 from hdfs import InsecureClient
 import pandas as pd
 
-"""使用python通过hdfs client读取hdfs文件 https://hdfscli.readthedocs.io/en/latest/quickstart.html
-https://hdfscli.readthedocs.io/en/latest/quickstart.html#instantiating-a-client
-    通过pandas的read_parquet读取parquet文件，pandas 0.21 introduces new functions for Parquet:
-https://pandas.pydata.org/pandas-docs/version/0.21/io.html#io-parquet
-    需要使用pyarrow或fastparquet模块辅助，但都没安装成功，pyarrow提示和ipaddress模块冲突，fastparquet下载太慢、下载不下来
-"""
-# client = Client('http://lg-11-152.ko.cn:50070')
-client=InsecureClient('http://lg-11-152.ko.cn:50070',user='kzcq')
-print (dir(client))
-# filePath='/user/kzcq/data_in_parquet/phone_game_user_info/date=2018-05-14/part-00000-ef419a27-042e-4690-8a33-774539d6c31f.c000.snappy.parquet'
-filePath = '/user/kzcq/datatest/test.json'
-jsondata = {"@timestamp": "2018-05-22T02:51:32.392Z",
-        "beat": {"hostname": "lg-13-135.ko.cn", "name": "lg-13-135.ko.cn", "version": "5.5.0"}, "input_type": "log",
-        "message": "120|0|kongzhong_2034115|120|0|0|22|HUAWEI BND-AL10|866369034951568|null|1920x1080|Android|Android OS 7.0 / API-24 (HONORBND-AL10/C00B182)|2018-01-31 23:59:42 +0800|LOGIN|3|117.136.45.98|3|0|null|null|利海德·布德料|671917245932748800|12010A4E0010022100|671917245932748800",
-        "offset": 10390, "source": "/data/0521/120.game.login.2018-02-01", "type": "log"}
-import json
-js=json.dumps(jsondata)
-
 # with client.read(filePath) as fs:
     # content=pd.read_parquet(fs,engine='fastparquet')
     # content=pd.read_parquet('example_pa.parquet', engine='pyarrow')
     # print(content)
-with client.write(filePath) as fs:
-    fs.write(js)
-
-
-# 关于python操作hdfs的API可以查看官网:
-# https://hdfscli.readthedocs.io/en/latest/api.html
-# import sys
-# from hdfs.client import Client
-#
-# #设置utf-8模式
-# reload(sys)
-# sys.setdefaultencoding( "utf-8" )
+# with client.write(filePath) as fs:
+#     fs.write(js)
 
 # 读取hdfs文件内容,将每行存入数组返回
 def read_hdfs_file(client, filename):
@@ -98,6 +70,20 @@ def move_or_rename(client, hdfs_src_path, hdfs_dst_path):
 # 返回目录下的文件
 def list(client, hdfs_path):
     return client.list(hdfs_path, status=False)
+
+if __name__ == '__main__':
+    # client = Client('http://lg-11-152.ko.cn:50070')
+    client = InsecureClient('http://lg-11-152.ko.cn:50070', user='kzcq')
+    # mkdirs(client,'/user/kzcq/data_in_json/kzmg_all_payment')
+    # mkdirs(client, '/user/kzcq/data_in_json/kzmg_all_regist')
+    # mkdirs(client, '/user/kzcq/data_in_json/kzmg_hunter_login')
+    # delete_hdfs_file(client,'/user/kzcq/datatest/kzmg_login.json')
+    # delete_hdfs_file(client, '/user/kzcq/datatest/kzmg_login1.json')
+    # delete_hdfs_file(client, '/user/kzcq/datatest/kzmg_payment.json')
+    # delete_hdfs_file(client,'/user/kzcq/datatest/')
+    # client.delete('/user/kzcq/datatest/',recursive=True)
+    client.makedirs('/user/kzcq/datatest/')
+
 
 # client = Client(url, root=None, proxy=None, timeout=None, session=None)
 # client = Client("http://hadoop:50070")
