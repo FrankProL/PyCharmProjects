@@ -41,6 +41,17 @@ i = 0
 #     i+=1
 #     if i>100: break
 
+"""消费者(消费群组)"""
+# from kafka import KafkaConsumer
+#
+# consumer = KafkaConsumer('kzmg_hunter_login',
+#                          group_id='my-group',
+#                          bootstrap_servers=['172.23.11.150:9092'])
+#
+# for message in consumer:
+#     print ("%s:%d:%d: key=%s value=%s" % (message.topic, message.partition,
+#                                           message.offset, message.key,
+#                                           message.value.decode('utf-8')))
 """消费者(手动设置偏移量)"""
 # consumer = KafkaConsumer('phone-game-userinfo', bootstrap_servers=['172.23.11.150:9092'])
 # consumer = KafkaConsumer('phone-game-userlogin-kong', bootstrap_servers=['172.23.11.150:9092'])

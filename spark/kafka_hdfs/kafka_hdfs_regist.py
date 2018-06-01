@@ -24,6 +24,10 @@ num=consumer.end_offsets(consumer.assignment()).values()[0]
 print(num)
 print(consumer.end_offsets(consumer.assignment()))
 i = 0
+for key,value in consumer.end_offsets(consumer.assignment()).items():
+    print key,value
+    print str(key)[41:52]
+
 # t= '2018-05-22'
 # timeArray =time.strptime(t,'%Y-%m-%d')
 # timeStamp=int(time.mktime(timeArray))

@@ -81,20 +81,5 @@ if __name__ == '__main__':
     # delete_hdfs_file(client, '/user/kzcq/datatest/kzmg_login1.json')
     # delete_hdfs_file(client, '/user/kzcq/datatest/kzmg_payment.json')
     # delete_hdfs_file(client,'/user/kzcq/datatest/')
-    # client.delete('/user/kzcq/datatest/',recursive=True)
-    client.makedirs('/user/kzcq/datatest/')
-
-
-# client = Client(url, root=None, proxy=None, timeout=None, session=None)
-# client = Client("http://hadoop:50070")
-
-# move_or_rename(client,'/input/2.csv', '/input/emp.csv')
-# read_hdfs_file(client,'/input/emp.csv')
-# put_to_hdfs(client,'/home/shutong/hdfs/1.csv','/input/')
-# append_to_hdfs(client,'/input/emp.csv','我爱你'+'\n')
-# write_to_hdfs(client,'/input/emp.csv','我爱你'+'\n')
-# read_hdfs_file(client,'/input/emp.csv')
-# move_or_rename(client,'/input/emp.csv', '/input/2.csv')
-# mkdirs(client,'/input/python')
-# print list(client,'/input/')
-# chown(client,'/input/1.csv', 'root')
+    client.delete('/user/kzcq/data_in_json/kzmg_hunter_login',recursive=True)
+    client.makedirs('/user/kzcq/data_in_json/kzmg_hunter_login/')
