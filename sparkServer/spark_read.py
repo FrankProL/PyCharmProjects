@@ -21,10 +21,11 @@ sys.stdout = codecs.getwriter('utf8')(sys.stdout)
 spark=SparkSession.builder.appName("Python Spark SQL basic example").getOrCreate()
 
 # df=spark.read.parquet("/user/kzcq/data_in_parquet/phone_game_user_info")
-df=spark.read.parquet("/user/kzcq/data_in_parquet/phone_game_userlogin_guest")
+# df=spark.read.parquet("/user/kzcq/data_in_parquet/phone_game_userlogin_guest")
 # df=spark.read.parquet("/user/kzcq/data_in_parquet/phone_game_userlogin_kong")
 # df=spark.read.parquet("/user/kzcq/data_in_parquet/phone_game_userlogin_tripartite")
 # df=spark.read.json('file:///usr/local/spark-2.3.0/examples/src/main/resources/people.json')
+df=spark.read.parquet('/user/kzcq/datalogintest2/')
 df.show(30)
 
 # df.createOrReplaceTempView('user')

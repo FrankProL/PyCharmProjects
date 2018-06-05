@@ -26,7 +26,7 @@ if __name__ == "__main__":
     # subscribeType = sys.argv[2]
     # topics = sys.argv[3]
     bootstrapServers='172.23.11.150:9092'
-    subscribeType='Subscribe'
+    subscribeType='subscribe'
     topics='kzmg_hunter_login'
 
     spark = SparkSession\
@@ -62,4 +62,11 @@ if __name__ == "__main__":
     #     .start()
     #
     # query.awaitTermination()
-    query=lines.writeStream.outputMode('complete').format('console').start()
+
+    # query=lines.writeStream.format('console').start()
+    # query.awaitTermination()
+
+    query =lines.writeStream.format('json')\
+        .outputMode('append')\
+        .option("checkpointLocation", "/user/kzcq/datalogintest3").option('path','/user/kzcq/datalogintest2').start()
+    query.awaitTermination()
