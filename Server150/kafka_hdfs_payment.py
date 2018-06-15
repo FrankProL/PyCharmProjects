@@ -4,13 +4,16 @@
 # @Time    : 2018/6/12 16:11
 # @Author  : Frank
 # @Site    : 
-# @File    : kafka_hdfs_regist.py
+# @File    : kafka_hdfs_payment.py
 # @Software: PyCharm
 """
 from kafka import KafkaConsumer, TopicPartition
 from hdfs import InsecureClient
 import ConfigParser
-
+"""
+支付数据
+link @ kafka_hdfs_regist2.py
+"""
 
 def save_jsondata(client, consumer, filePath, append_sep):
     i = 0
@@ -20,14 +23,19 @@ def save_jsondata(client, consumer, filePath, append_sep):
             for message in consumer:
                 fs.write(message.value.decode('utf-8') + '\n')
                 i += 1
-                if (i) % append_sep == 0:
-                    print (i, message.offset, message.partition)
-                    break
+                if i<136304:
+                    if i % (append_sep*1000) == 0:
+                        print (i, message.offset, message.partition)
+                        break
+                else:
+                    if i % append_sep == 0:
+                        print (i, message.offset, message.partition)
+                        break
 
 
 if __name__ == '__main__':
     config = ConfigParser.RawConfigParser()
-    config.read('kafka_to_hdfs.cfg')
+    config.read('kafka_hdfs_payment.cfg')
 
     filePath = config.get('Section1', 'filePath')
     topic = config.get('Section1', 'topic')
@@ -37,9 +45,9 @@ if __name__ == '__main__':
 
     consumer = KafkaConsumer(topic, bootstrap_servers=['172.23.11.150:9092'])
     consumer.topics()
-    print (consumer.subscription())  # 获取当前消费者订阅的主题
-    print (consumer.assignment())  # 获取当前消费者topic、分区信息
-    print (consumer.beginning_offsets(consumer.assignment()))  # 获取当前消费者可消费的偏移量
+    print (consumer.subscription())
+    print (consumer.assignment())
+    print (consumer.beginning_offsets(consumer.assignment()))
     print(consumer.end_offsets(consumer.assignment()))
     for key, value in consumer.end_offsets(consumer.assignment()).items():
         print (key, value)
