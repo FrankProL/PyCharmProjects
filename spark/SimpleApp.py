@@ -11,8 +11,10 @@
 """
 from pyspark.sql import SparkSession
 
-logFile = "/opt/modules/spark-2.3.0-bin-hadoop2.7/README.md"  # Should be some file on your system
-spark = SparkSession.builder.appName("SimpleApp").getOrCreate()
+logFile = "file:///opt/modules/spark-2.3.0-bin-hadoop2.7/README.md"  # Should be some file on your system
+spark = SparkSession\
+    .builder.appName("SimpleApp")\
+    .getOrCreate()
 logData = spark.read.text(logFile).cache()
 
 numAs = logData.filter(logData.value.contains('a')).count()
