@@ -15,13 +15,13 @@ import random
 
 
 def insert_sort(arr):
-    for i in range(len(arr)):
-        preindex = i - 1
-        current = arr[i]
-        while preindex >= 0 and arr[preindex] > current:
-            arr[preindex + 1] = arr[preindex]
-            preindex -= 1
-        arr[preindex + 1] = current
+    for i in range(len(arr)):       # 从第一个元素开始，将第i个元素插入前面已经排好序列的合适位置（将这个元素和前面的元素，从后向前一个一个比较，直到找到合适的位置）
+        preindex = i - 1                            # 指向前一个位置
+        current = arr[i]                            # current 记录arr[i]当前值
+        while preindex >= 0 and arr[preindex] > current:    # preindex索引位置大于等于0，且大于记录下的a[i]值时
+            arr[preindex + 1] = arr[preindex]               # 将a[i]的值替换为前面已经排好序的最后一个值（即排序好的最大值a[i-1]）
+            preindex -= 1                                   # 索引继续向前一个位置，循环判断，将比a[i]大的值不断向后替换，直到前一个值不大于a[i]，循环结束
+        arr[preindex + 1] = current                         # 此时索引处的值<=a[i],preindex+1处的值大于a[i],已被替换到后一个位置，将a[i]的值放到preindex处
     return arr
 
 
