@@ -20,9 +20,14 @@
     re.finditer和 findall 类似，在字符串中找到正则表达式所匹配的所有子串，并把它们作为一个迭代器返回。
     re.split方法按照能够匹配的子串将字符串分割后返回列表，它的使用形式如下：
         re.split(pattern, string[, maxsplit=0, flags=0])
+    raw字符串（原始字符串，里面的字符不需要转义）    r'xxx'
+        产生原因是ASCII 字符和正则表达式特殊字符间所产生的冲突。
+        如果字符串中不带转义字符，则带不带r''，字符串的意思都是一样的。
 """
 import re
 
+print (re.match('www', 'www.baidu.com').start())  # 在起始位置匹配
+print (re.match('www', 'www.baidu.com').end())  # 在起始位置匹配
 print (re.match('www', 'www.baidu.com').span())  # 在起始位置匹配
 print (re.match('com', 'www.baidu.com'))  # 不在起始位置匹配
 
@@ -34,9 +39,9 @@ if matchObj:
     print (matchObj.span())
     print ('matchObj.group() :'),
     print (matchObj.group())
-    print ('matchObj.group() :'),
+    print ('matchObj.group(1) :'),
     print (matchObj.group(1))
-    print ('mathcObj.group() :'),
+    print ('mathcObj.group(2) :'),
     print (matchObj.group(2))
 else:
     print('no match!')
@@ -88,7 +93,7 @@ s = 'A28G4HFD567'
 print(re.sub('(?P<value>\d+)', double, s))
 
 print ('~~'*30)
-pattern = re.compile(r'\d+')  # 查找数字
+pattern = re.compile(r'\d+')  # 查找数字,匹配至少一个数字
 result1 = pattern.findall('runoob 123 google 456')
 result2 = pattern.findall('run88oob123google456', 0, 10)
 
@@ -105,3 +110,23 @@ print (re.split('\W+', 'runoob, runoob, runoob.'))
 print (re.split('(\W+)', 'runoob, runoob, runoob.'))
 print (re.split('\W+', ' runoob, runoob, runoob.', 1) )
 print (re.split('a*', 'hello world'))
+
+# str.split不支持正则及多个切割符号，不感知空格的数量，比如用空格切割
+s1="aa bb  cc,dd"
+print(s1.split(" "))
+# re.split，支持正则及多个字符切割
+print(re.split(" +",s1))
+print(re.split("[ ]",s1))
+print(re.split("\s+",s1))   # \s匹配所有空白字符来切割（[\t\n\r\f\v]）  \S（任意非空白字符[^\t\n\r\f\v]
+print(re.split("( +)",s1))  # 加括号将分割包括，则切分后列表保留分隔符
+print(re.split("[\s,]+",s1)) # 多字符匹配，用中括号括起来
+
+
+s = 'fadfdfa?.3\hello'
+s1 = r'fadfafa\nhello'
+print(re.split('\\\\',s))
+print(re.split(r'\\',s))
+# raw字符串
+# 正则表达式使用反斜杆（\）来转义特殊字符，使其可以匹配字符本身，而不是指定其他特殊的含义
+# 要匹配一个反斜杆本身，你也许要用'\\\\'来做为正则表达式的字符串，因为正则表达式要是\\，
+# 而字符串里，每个反斜杆都要写成\\。
