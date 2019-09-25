@@ -51,6 +51,7 @@ for key,value in result_dict.items():
     task_time=value[1]
     if(task_time>5):
         print("   yarn application -kill " + key + "   " + value[0] + "    " + str(value[1]))
+        subprocess.Popen("yarn application -kill "+key,shell=True)
 print("================================hour task and time >5 :")
 for key,value in result_dict.items():
     # print("yarn application -kill " + key + "   " + value[0] + "    " + str(value[1]))
